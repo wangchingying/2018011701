@@ -12,13 +12,13 @@ import com.cyw.a2018011701.data.Student;
 public class EditActivity extends AppCompatActivity {
 EditText ed,ed5,ed6;
 int id;
-Student s;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         id=getIntent().getIntExtra("id",0);
-        s=MainActivity.dao.getStudent(id);
+        Student s=MainActivity.dao.getStudent(id);
         Toast.makeText(this,s.name, Toast.LENGTH_SHORT).show();
         ed=(EditText)findViewById(R.id.editText);
         ed5=(EditText)findViewById(R.id.editText5);
@@ -28,13 +28,20 @@ Student s;
         ed6.setText(String.valueOf(s.score));
 
     }
-    public String clickUpdate(View v)
+    public void clickUpdate(View v)
     {
-        MainActivity.dao.update(s);
-        return "改玩了";
-    }
+        int id=Integer.valueOf(ed.getText().toString());
+        String name=ed5.getText().toString();
+        int score= Integer.valueOf(ed6.getText().toString());
+
+            MainActivity.dao.update(new Student(id, name, score));
+        Toast.makeText(this, "已更新", Toast.LENGTH_SHORT).show();
+   }
+
     public void clickBack(View v)
     {
-        finish();
+        Intent it=new Intent(EditActivity.this,MainActivity.class);
+        startActivity(it);
     }
+
 }

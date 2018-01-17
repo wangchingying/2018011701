@@ -24,9 +24,9 @@ int id;
         id=getIntent().getIntExtra("id",0);
         s = MainActivity.dao.getStudent(id);
         //Toast.makeText(this,String.valueOf(id), Toast.LENGTH_SHORT).show();
-                tv1.setText(String.valueOf(s.id));
-                tv2.setText(s.name);
-                tv3.setText(String.valueOf(s.score));
+            tv1.setText(String.valueOf(s.id));
+            tv2.setText(s.name);
+            tv3.setText(String.valueOf(s.score));
 
     }
     public void clickBack(View v)
