@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.cyw.a2018011701.data.Student;
+import com.cyw.a2018011701.data.StudentFileDAO;
 import com.cyw.a2018011701.data.StudentScoreDAO;
 
 import java.util.ArrayList;
@@ -21,12 +22,13 @@ public class MainActivity extends AppCompatActivity {
     ListView lv;
     ArrayList<String> studentNames;
     //宣告成只能new 一次
-    final public static StudentScoreDAO dao=new StudentScoreDAO();
+    public static StudentFileDAO dao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //將context, 此activity的資訊傳入StudentFileDAO建構式
+        dao=new StudentFileDAO(MainActivity.this);
 
     }
 
