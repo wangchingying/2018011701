@@ -12,7 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.cyw.a2018011701.data.DBtype;
 import com.cyw.a2018011701.data.Student;
+import com.cyw.a2018011701.data.StudentDAO;
+import com.cyw.a2018011701.data.StudentDAOFactory;
 import com.cyw.a2018011701.data.StudentFileDAO;
 import com.cyw.a2018011701.data.StudentScoreDAO;
 
@@ -21,14 +24,21 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     ListView lv;
     ArrayList<String> studentNames;
+    DBtype dbType;
     //宣告成只能new 一次
-    public static StudentFileDAO dao;
+    //public static StudentFileDAO dao;
+
+    //選告interface(父類別就好)
+    public static StudentDAO dao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dbType = DBtype.FILE; // 1:記憶體 2:檔案
+        //用factory來控制要用記憶體還是檔案,這樣不用大改程式\
+        dao = StudentDAOFactory.getDAOInstance(this, dbType);
         //將context, 此activity的資訊傳入StudentFileDAO建構式
-        dao=new StudentFileDAO(MainActivity.this);
+        //dao=new StudentFileDAO(MainActivity.this);
 
     }
 
