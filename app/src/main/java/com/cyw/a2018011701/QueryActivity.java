@@ -15,6 +15,7 @@ public class QueryActivity extends AppCompatActivity {
 TextView tv1,tv2,tv3;
 Student s;
 int id;
+boolean fastback=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +37,7 @@ int id;
     @Override
     protected void onResume() {
         super.onResume();
+        if(fastback){finish();}//使用者按了clickedit時fastback就變true
         s = MainActivity.dao.getStudent(id);
         //Toast.makeText(this,String.valueOf(id), Toast.LENGTH_SHORT).show();
         tv1.setText(String.valueOf(s.id));
@@ -73,6 +75,7 @@ int id;
 
     public void clickEdit(View v)
     {
+        fastback=true;
         Intent it=new Intent(QueryActivity.this,EditActivity.class);
         it.putExtra("id",id);
         startActivity(it);
