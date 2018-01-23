@@ -5,5 +5,5 @@ package com.cyw.a2018011701.data;
  */
 
 public enum DBtype {
-    MEMORY, FILE
+    MEMORY, FILE, DB,CLOUD
 }

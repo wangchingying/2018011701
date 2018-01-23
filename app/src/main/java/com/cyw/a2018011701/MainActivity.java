@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     ListView lv;
     ArrayList<String> studentNames;
     DBtype dbType;
+    ArrayAdapter<String> adapter;
     //宣告成只能new 一次
     //public static StudentFileDAO dao;
 
@@ -34,37 +35,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dbType = DBtype.FILE; // 1:記憶體 2:檔案
+        dbType = DBtype.CLOUD; // 1:記憶體 2:檔案 3:SQLite 4:Firebase
         //用factory來控制要用記憶體還是檔案,這樣不用大改程式\
         dao = StudentDAOFactory.getDAOInstance(this, dbType);
         //將context, 此activity的資訊傳入StudentFileDAO建構式
         //dao=new StudentFileDAO(MainActivity.this);
-
+        studentNames = new ArrayList<>();
+        adapter = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.simple_list_item_1, studentNames);
+        lv = (ListView) findViewById(R.id.listView);
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent it = new Intent(MainActivity.this, QueryActivity.class);
+                it.putExtra("id", dao.getList().get(position).id);
+                startActivity(it);
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        refreshData();
+    }
 
-        lv=(ListView)findViewById(R.id.listView);
-        studentNames=new ArrayList<>();
+    //此副程式讓app在一開啟的時候能把資料先讀出來
+    public void refreshData()
+    {
+        studentNames.clear();
         for (Student s : dao.getList())
         {
             studentNames.add(s.name);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1, studentNames);
-        lv.setAdapter(adapter);
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent it=new Intent(MainActivity.this,QueryActivity.class);
-                it.putExtra("id",dao.getList().get(i).id);
-                startActivity(it);
-            }
-        });
+        adapter.notifyDataSetChanged();
     }
 
 
